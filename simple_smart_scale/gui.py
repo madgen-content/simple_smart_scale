@@ -1,10 +1,12 @@
 import PySimpleGUI as sg
 import simple_smart_scale.scale as scale
+import simple_smart_scale.data as data
+
+graph_loc = data.graph_loc
+weight_loc = data.weights_loc
 
 
 def main():
-    # location the weight graph gets saved
-    graph_loc = './weight_graph.png'
 
     # this whole section builds the skeleton for the GUI layout
     graphcol = [
@@ -16,7 +18,7 @@ def main():
         [sg.Button('tare')],
         [sg.Button('calibrate (20kg)')],
         [sg.Button('weigh')],
-        [sg.Button('save and classify')]
+        [sg.Button('classify')]
     ]
 
     def label_pair_producer(label, font = None):
@@ -35,8 +37,8 @@ def main():
     ]
 
     # finalize and render the starting layout
-    classifications = [item for pair in classifications for item in pair]
-    buttoncol.extend([[sg.HorizontalSeparator()], classifications[0:6], classifications[6:]])
+    buttoncol.append([sg.HorizontalSeparator()])
+    buttoncol.extend(classifications)
     layout = [
         [
             sg.Column(graphcol),
@@ -52,7 +54,7 @@ def main():
     window = sg.Window("Image Viewer", layout)
     window.finalize()
     window["-IMAGE-"].update(filename=graph_loc)
-    scale_config = None
+    scale_config = [None, None, None]
     weight = None
     
     # main event loop
@@ -77,16 +79,16 @@ def main():
         # get a valid weight and display it
         if event == 'weigh':
             try:
-                weight = scale.get_weight(*scale_config)
+                weight = scale.weigh_func(*scale_config)
                 window['weight_val'].update(f'{weight:.2f}')
-            except:
-                pass
+                data.update_weight_data(weight)
+            except Exception as e:
+                print(e)
         
         # generate graph, save it
         # run dataframe through classifier
-        if event == 'save and classify':
-
-            continue
+        if event == 'classify':
+            True
 
         # just update the image every time
         try:

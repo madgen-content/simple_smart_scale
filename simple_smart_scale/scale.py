@@ -2,7 +2,12 @@ import random
 import time
 
 # this is for testing purposes
+# allows the GUI to run when not running on RPI
 config = 'real'
+try:
+    import board
+except:
+    config = 'rand'
 
 def scale_running_avg(readers, spec = 4):
     avg = 0
@@ -69,7 +74,7 @@ def get_weight(readers, zero, kg_per_step):
     return w
 
 weight_opts = {
-    'rand': random.randint,
+    'rand': lambda x,y,z: float(random.randint(0,250)),
     'real': get_weight
 }
 

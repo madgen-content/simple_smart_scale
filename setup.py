@@ -12,6 +12,7 @@ setup(name='simple_smart_scale',
             'pandas',
             'pysimplegui',
             'dill',
-            'adafruit_ads1x15'
+            'adafruit_ads1x15',
+            'seaborn'
       ],
       zip_safe=False)
