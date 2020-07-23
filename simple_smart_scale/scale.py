@@ -48,7 +48,6 @@ def configure_zero():
                 readers.append(reader)
         except:
             print('scale initializer err!')
-            pass
         initialized = True
     
     zero = scale_running_avg(readers)

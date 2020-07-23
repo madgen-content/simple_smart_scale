@@ -100,7 +100,7 @@ def main():
             if os.path.isfile(graph_loc):
                 window["-IMAGE-"].update(filename=graph_loc)
         except:
-            pass
+            print('img err')
 
     window.close()
     return
