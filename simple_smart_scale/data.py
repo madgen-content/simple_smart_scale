@@ -39,7 +39,7 @@ def update_weight_data(weight):
     # save the new graph
     df = pd.DataFrame({'weight (kg)': weights, 'seconds since first weigh-in': seconds_since})
     ax = sns.lineplot(y="weight (kg)", x="seconds since first weigh-in", data=df, marker='.', fillstyle='full', color='tab:blue', markeredgewidth=0)
-    plt.savefig(graph_loc)
+    plt.savefig(graph_loc, dpi=65)
     return
 
 distribs = {

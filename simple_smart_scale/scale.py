@@ -69,7 +69,7 @@ def get_weight(readers, zero, kg_per_step):
     steps = scale_running_avg(readers, spec=8)
 
     w = (steps - zero) * kg_per_step
-    print('weight: {w}')
+    print(f'weight: {w}')
     return w
 
 weight_opts = {
