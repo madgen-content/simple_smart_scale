@@ -34,12 +34,9 @@ def main():
         label_pair_producer('large loser')
     ]
 
-
-
+    # finalize and render the starting layout
     classifications = [item for pair in classifications for item in pair]
     buttoncol.extend([[sg.HorizontalSeparator()], classifications[0:6], classifications[6:]])
-
-    # finalize and render the starting layout
     layout = [
         [
             sg.Column(graphcol),
@@ -50,16 +47,46 @@ def main():
         label_pair_producer('weight', font=('Helvetica', '17')),
         label_pair_producer('class', font=('Helvetica', '15')),
     ]
+
+    # some basic setup
     window = sg.Window("Image Viewer", layout)
     window.finalize()
     window["-IMAGE-"].update(filename=graph_loc)
-
+    scale_config = None
+    weight = None
+    
     # main event loop
     # this is where the interactive logic happens
     while True:
         event, values = window.read()
+
+        # exit appropriately
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
+
+        # zero the scale and get a config
+        if event == 'tare':
+            scale_config = scale.configure_zero()
+            window['weight_val'].update('0.00')
+
+        # calibrate to 20kg to prepare for weighing
+        if event == 'calibrate (20kg)':
+            scale.configure_20kg(scale_config)
+            window['weight_val'].update('20.00')
+
+        # get a valid weight and display it
+        if event == 'weigh':
+            try:
+                weight = scale.get_weight(*scale_config)
+                window['weight_val'].update(f'{weight:.2f}')
+            except:
+                pass
+        
+        # generate graph, save it
+        # run dataframe through classifier
+        if event == 'save and classify':
+
+            continue
 
         # just update the image every time
         try:

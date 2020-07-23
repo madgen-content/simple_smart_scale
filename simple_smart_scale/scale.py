@@ -47,8 +47,8 @@ def configure_zero():
         initialized = True
     
     zero = scale_running_avg(readers)
-
-    return [readers, zero, None]
+    config = [readers, zero, None]
+    return config
 
 # takes a partial scale config list and computes the kg_per_step
 # mutates the list. returns nothing
