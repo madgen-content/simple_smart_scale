@@ -10,6 +10,8 @@ setup(name='simple_smart_scale',
       packages=['simple_smart_scale'],
       install_requires=[
             'pandas',
-            'pysimplegui'
+            'pysimplegui',
+            'dill',
+            'adafruit_ads1x15'
       ],
       zip_safe=False)

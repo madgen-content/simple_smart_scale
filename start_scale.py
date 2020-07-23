@@ -1,0 +1,2 @@
+import simple_smart_scale
+simple_smart_scale.main()
