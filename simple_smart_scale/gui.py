@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import simple_smart_scale.scale as scale
 import simple_smart_scale.data as data
+import os
 
 graph_loc = data.graph_loc
 weight_loc = data.weights_loc
@@ -53,7 +54,8 @@ def main():
     # some basic setup
     window = sg.Window("Image Viewer", layout)
     window.finalize()
-    window["-IMAGE-"].update(filename=graph_loc)
+    if os.path.isfile(graph_loc):
+        window["-IMAGE-"].update(filename=graph_loc)
     scale_config = [None, None, None]
     weight = None
     
@@ -95,7 +97,8 @@ def main():
 
         # just update the image every time
         try:
-            window["-IMAGE-"].update(filename=graph_loc)
+            if os.path.isfile(graph_loc):
+                window["-IMAGE-"].update(filename=graph_loc)
         except:
             pass
 
