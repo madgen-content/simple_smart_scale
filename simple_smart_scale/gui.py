@@ -88,7 +88,10 @@ def main():
         # generate graph, save it
         # run dataframe through classifier
         if event == 'classify':
-            True
+            tag, metrics = data.get_NN_classification()
+            for k in metrics:
+                window[f'{k}_val'].update(f'{metrics[k]:.3f}')
+            window['class_val'].update(tag)
 
         # just update the image every time
         try:
