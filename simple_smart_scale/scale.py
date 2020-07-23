@@ -46,9 +46,9 @@ def configure_zero():
                 readers.append(reader)
                 reader = AnalogIn(ads, ADS.P2, ADS.P3)
                 readers.append(reader)
+            initialized = True
         except:
             print('scale initializer err!')
-        initialized = True
     
     zero = scale_running_avg(readers)
     config = [readers, zero, None]
