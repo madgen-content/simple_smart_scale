@@ -4,7 +4,7 @@ import datetime
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
-from statistics import mean
+from statistics import mean, stdev
 from math import sqrt
 sns.set()
 
@@ -95,16 +95,24 @@ def euclidean_dist(l1,l2):
     return sqrt(tot)
 
 # also assumes justification
-def covariance_dist(l1, l2):
+def pearson_dist(l1, l2):
+
     mean_l1 = sum(l1) / len(l1)
     mean_l2 = sum(l2) / len(l2)
-    return sum((a - mean_l1) * (b - mean_l2) for (a,b) in zip(l1,l2)) / len(l1)
+    cov = sum((a - mean_l1) * (b - mean_l2) for (a,b) in zip(l1,l2)) / len(l1)
+    stdl1 = stdev(l1)
+    stdl2 = stdev(l2)
+    pearson = cov / (stdl1 * stdl2)
+    
+    # More magnitude means further away for our purpose
+    # if the correlation is +, we want to - that from the distance
+    return -1 * pearson
 
 # calc dist between 2 timeseries
 def full_dist(l1, l2):
     a,b = justify_lists(l1, l2)
     e = euclidean_dist(a, b)
-    c = covariance_dist(a,b)
+    c = pearson_dist(a,b)
     return e + c
 
 def get_NN_classification():
