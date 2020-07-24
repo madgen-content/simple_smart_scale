@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from statistics import mean, stdev
 from math import sqrt
+import random
 sns.set()
 
 weights_loc = './weights.dill'
@@ -115,8 +116,11 @@ def full_dist(l1, l2):
     c = pearson_dist(a,b)
     return e + c
 
-def get_NN_classification():
-    weight_pcts_mthly = daily_weights_to_monthly_pcts(get_weight_history())
+def get_NN_classification(test_seq=None):
+    if test_seq:
+        weight_pcts_mthly = test_seq
+    else:
+        weight_pcts_mthly = daily_weights_to_monthly_pcts(get_weight_history())
     distrib_dists = {k: full_dist(weight_pcts_mthly, v) for k,v in interp_distribs.items()}
     distrib_ord = list(sorted([(k,v) for k,v in distrib_dists.items()], key=lambda x: x[1]))
     closest_class = distrib_ord[0][0]
@@ -124,3 +128,14 @@ def get_NN_classification():
     distrib_closenesses = {k: 1 - v/maxdist for k,v in distrib_dists.items()}
     return (closest_class, distrib_closenesses)
 
+def test_classification(D=.5):
+    for k in interp_distribs:
+        c = 0 
+        for _ in range(100):
+            fuzzed = [random.uniform(1-D, 1+D) * x for x in interp_distribs[k]]
+            pred, _ = get_NN_classification(test_seq=fuzzed)
+            if pred == k:
+                c += 1
+
+        print((k, c/100))
+    return
